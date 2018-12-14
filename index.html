@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Clicky Game</title>
+    <!doctype html>
+    <html lang="en">
+
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+            integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+        <title>Hello, world!</title>
+    </head>
+
+<body>
+    <style>
+
+        .jumbotron {
+            text-align:center;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            color: white;
+            background: black;
+        }
+        p {
+            font-family: Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .game, #card-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            /*column-width: 200px;*/
+        }
+        .row {
+            width: 90%;
+            margin: 0 auto;
+        }
+        .col {
+            border: 1px solid black;
+            background: white;
+            height: 200px;
+            width: 20%;
+            display: inline-block;
+            margin: 5px;
+        }</style>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4">DUNDER MIFFLIN</h1>
+            <h2>Clicky Game</h2>
+            <p class="lead">Test your memory - don't click on the same character twice!</p>
+        </div>
+        <p>User Score: <span class="userScore">0</span></p>
+        <p>High Score: <span class="highScore">0</span></p>
+    </div>
+    <div class="container">
+            <div id="card-section"></div>
+    </div>
+    
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+    <script>
+
+        let cards;
+        let cardBtn;
+        //make these into objects with the value and image of the character
+        let cardValues = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        let count = 0;
+        let userScore = 0;
+        let highScore = 0;
+
+        function initialize() {
+            //userScore = 0;
+            //highScore = 0;
+            $('.userScore').html(userScore)
+            $('.highScore').html(highScore)
+        }
+        $('#btnClick').on('click', function () {
+            console.log('button clicked')
+        });
+
+        for (let i = 0; i < cardValues.length; i++) {
+            let cardView = $("<div>");
+            cardView.addClass("cards");
+            cardView.attr("id", "data-id-" + i);
+            cardView.attr("count", parseInt(0));
+            $("#card-section").append(cardView);
+            $("#data-id-" + i).append("<h2>" + cardValues[i] + "</h2>").css("border", "1px solid black");
+            //$("#data-id-"+ i).css("border", "1px solid black");
+        }
+
+        function shuffleCards() {
+            let gameCards = $('#card-section').children()
+            while (gameCards.length) {
+                $('#card-section').append(gameCards.splice(Math.floor(Math.random() * gameCards.length), 1)[0]);
+            }
+        }
+        //figure out how to keep high score from incrementing if they clicked too many times
+        $(document).on("click", ".cards", function () {
+            //grab data from card
+            let thisId = $(this).attr('id');
+            let thisCount = $(this).attr('count')
+            console.log(thisId + ' clicked. Count: ' + thisCount);
+            //add 1 to card (fix later to end game once count hits 2)
+            thisCount = parseInt(thisCount) + 1;
+            highScore++
+            userScore++
+            console.log(highScore)
+            $('.highScore').html(highScore)
+            $('.userScore').html(userScore)
+            console.log('new count: ', thisCount);
+            $(this).attr("count", parseInt(thisCount));
+            if (thisCount > 1) {
+                console.log('too many clicks');
+                userScore = 0;
+                $('.userScore').html(userScore)
+            }
+            else {
+                shuffleCards();
+            }
+        })
+    </script>
+</body>
+
+</html>
