@@ -49,7 +49,10 @@
             width: 20%;
             display: inline-block;
             margin: 5px;
-        }</style>
+        }
+        /*add media queries for smaller screens img {width: 50px}*/
+        
+        </style>
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
             <h1 class="display-4">DUNDER MIFFLIN</h1>
@@ -58,6 +61,7 @@
         </div>
         <p>User Score: <span class="userScore">0</span></p>
         <p>High Score: <span class="highScore">0</span></p>
+        <p class="result"></p>
     </div>
     <div class="container">
             <div id="card-section"></div>
@@ -75,7 +79,56 @@
         let cards;
         let cardBtn;
         //make these into objects with the value and image of the character
-        let cardValues = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        let cardValues = [
+            {
+                value: 1,
+                card: "michael"
+            },
+            {
+                value: 2,
+                card: "dwight"
+            },
+            {
+                value: 3,
+                card: "pam"
+            },
+            {
+                value: 4,
+                card: "jim"
+            },
+            {
+                value: 5,
+                card: "stanley"
+            },
+            {
+                value: 6,
+                card: "phyllis"
+            },
+            {
+                value: 7,
+                card: "ryan"
+            },
+            {
+                value: 8,
+                card: "angela"
+            },
+            {
+                value: 9,
+                card: "oscar"
+            },
+            {
+                value: 10,
+                card: "kevin"
+            },
+            {
+                value: 11,
+                card: "toby"
+            },
+            {
+                value: 12,
+                card: "kelly"
+            },
+            ]
         let count = 0;
         let userScore = 0;
         let highScore = 0;
@@ -96,7 +149,12 @@
             cardView.attr("id", "data-id-" + i);
             cardView.attr("count", parseInt(0));
             $("#card-section").append(cardView);
-            $("#data-id-" + i).append("<h2>" + cardValues[i] + "</h2>").css("border", "1px solid black");
+            //$("#data-id-" + i).append("<h2>" + cardValues[i].value + "</h2>").css("border", "1px solid black");
+            $("#data-id-" + i).append(`<img src ="${cardValues[i].card}.png" width=180px>`)
+            //.css("border", "1px solid black")
+            //.css(`"background", "${cardValues[i].card}"`);
+            //$("#data-id-" + i).css("background", "'"+cardValues[i].color+"'");
+            //$("#data-id-" + i)
             //$("#data-id-"+ i).css("border", "1px solid black");
         }
 
@@ -107,6 +165,7 @@
             }
         }
         //figure out how to keep high score from incrementing if they clicked too many times
+        //logic for stopping game after all 12 cards have been clicked?
         $(document).on("click", ".cards", function () {
             //grab data from card
             let thisId = $(this).attr('id');
@@ -125,6 +184,12 @@
                 console.log('too many clicks');
                 userScore = 0;
                 $('.userScore').html(userScore)
+                $('.result').html("You lose!")
+            }
+            if (highScore == 12) {
+                console.log('You win!')
+                $('.result').html("You win!")
+                userScore = 0;
             }
             else {
                 shuffleCards();
